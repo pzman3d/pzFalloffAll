@@ -1,0 +1,29 @@
+//mel: pzFalloffAll
+global proc pzFalloffAll()
+{
+if (`window -exists pzFalloffAll`)deleteUI pzFalloffAll;
+window -t "pzFalloffAll" pzFalloffAll;
+columnLayout;
+text -l "Falloff名稱: (ex: primitiveFalloff1)" ;
+textField  -w 220 -tx "primitiveFalloff1" pfoafal;
+text -l "變形器名稱: (ex: ffd1)" ;
+textField -w 220 -tx "ffd1" pfoadef;
+text -l "套用數量: (ex: 100)" ;
+textField -w 220 -tx "100" pfoacon;
+window -e -wh 220 128 pzFalloffAll;
+button -l "開始套用" -c "pfoastart";
+showWindow;  
+}
+
+global proc pfoastart()
+{
+string $fal = `textField -q -tx pfoafal`;
+string $def = `textField -q -tx pfoadef`;
+int $con = `textField -q -tx pfoacon`;
+
+for ( $x=0 ; $x<=$con ; $x++)
+{  
+    print ("\["+$x+"\]"+"\n" );
+    connectAttr -f ($fal+".outputWeightFunction") ($def+".weightFunction"+"\["+$x+"\]");
+}
+}
